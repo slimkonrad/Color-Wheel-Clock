@@ -65,7 +65,7 @@ Time is mapped to the HSL (Hue, Saturation, Lightness) color model:
 - Swipe left/right or use the **clock / timer** pill buttons at the bottom of the screen to switch between the two modes
 
 # The Team
-- **Konner**
+- **Konner Rigby**
 - **Oscar Sanchez**
 
 ---
