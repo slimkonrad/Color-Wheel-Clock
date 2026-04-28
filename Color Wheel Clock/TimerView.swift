@@ -1,9 +1,10 @@
 import SwiftUI
+import AudioToolbox
 
 struct TimerView: View {
     @StateObject private var vm = TimerViewModel()
-    @State private var showPicker      = false
-    @State private var showAddPreset   = false
+    @State private var showPicker    = false
+    @State private var showAddPreset = false
 
     var body: some View {
         ZStack {
@@ -15,8 +16,6 @@ struct TimerView: View {
             .animation(.easeInOut(duration: 1.5), value: vm.progress)
 
             VStack(spacing: 0) {
-
-                // ── Header ───────────────────────────────────────────
                 Text("timer")
                     .font(.system(size: 11, weight: .light, design: .monospaced))
                     .foregroundColor(.white.opacity(0.35))
@@ -26,7 +25,7 @@ struct TimerView: View {
 
                 Spacer()
 
-                // ── Color sweep ring ─────────────────────────────────
+                // ── Ring ─────────────────────────────────────────────
                 ZStack {
                     Circle()
                         .fill(vm.progressColor.opacity(0.10))
@@ -34,7 +33,6 @@ struct TimerView: View {
                         .scaleEffect(1.3)
 
                     HueRing(lineWidth: 22, opacity: 0.18)
-
                     SweepArc(progress: vm.progress, color: vm.progressColor, lineWidth: 22)
 
                     Circle()
@@ -70,24 +68,26 @@ struct TimerView: View {
                 }
                 .frame(width: 290, height: 290)
                 .animation(.easeInOut(duration: 0.5), value: vm.progress)
+                .onChange(of: vm.isFinished) { _, finished in
+                    if finished {
+                        AudioServicesPlaySystemSound(1013)
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    } 
+                }
 
                 Spacer()
 
-                // ── Color sessions label ──────────────────────────────
+                // ── Sessions header ───────────────────────────────────
                 HStack {
                     Text("color sessions")
                         .font(.system(size: 10, weight: .light, design: .monospaced))
                         .foregroundColor(.white.opacity(0.3))
                         .tracking(2)
                     Spacer()
-                    Button {
-                        showAddPreset = true
-                    } label: {
+                    Button { showAddPreset = true } label: {
                         HStack(spacing: 4) {
-                            Image(systemName: "plus")
-                                .font(.system(size: 10))
-                            Text("new")
-                                .font(.system(size: 10, weight: .light, design: .monospaced))
+                            Image(systemName: "plus").font(.system(size: 10))
+                            Text("new").font(.system(size: 10, weight: .light, design: .monospaced))
                         }
                         .foregroundColor(.white.opacity(0.35))
                     }
@@ -95,7 +95,7 @@ struct TimerView: View {
                 .padding(.horizontal, 24)
                 .padding(.bottom, 10)
 
-                // ── Preset scroll row ─────────────────────────────────
+                // ── Preset row ────────────────────────────────────────
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
                         ForEach(vm.presets) { preset in
@@ -110,11 +110,17 @@ struct TimerView: View {
 
                 // ── Controls ─────────────────────────────────────────
                 HStack(spacing: 40) {
-                    CircleButton(icon: "arrow.counterclockwise", color: .white.opacity(0.3)) { vm.reset() }
+                    CircleButton(icon: "arrow.counterclockwise", color: .white.opacity(0.3)) {
+                        vm.reset()
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    }
                     CircleButton(
                         icon: vm.isRunning ? "pause.fill" : "play.fill",
                         color: vm.progressColor, size: 64
-                    ) { vm.toggle() }
+                    ) {
+                        vm.toggle()
+                        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    }
                     CircleButton(icon: "plus", color: .white.opacity(0.3)) {
                         vm.inputMinutes += 1; vm.set()
                     }
@@ -146,9 +152,9 @@ struct TimerView: View {
 
 // MARK: - Preset Button
 struct PresetButton: View {
-    var preset: TimerPreset
+    var preset:     TimerPreset
     var isSelected: Bool
-    var action: () -> Void
+    var action:     () -> Void
 
     var body: some View {
         Button(action: action) {
@@ -166,7 +172,7 @@ struct PresetButton: View {
                     .lineLimit(1)
 
                 Text(preset.seconds > 0
-                     ? "\(preset.minutes)m \(preset.seconds)s"
+                     ? "\(preset.minutes)m\(preset.seconds)s"
                      : "\(preset.minutes)m")
                     .font(.system(size: 8, weight: .thin, design: .monospaced))
                     .foregroundColor(.white.opacity(0.22))
@@ -182,12 +188,14 @@ struct PresetButton: View {
 struct AddPresetSheet: View {
     var onSave: (TimerPreset) -> Void
 
-    @State private var name          = ""
-    @State private var minutes       = 25
-    @State private var seconds       = 0
-    @State private var selectedHue   = 0.62
+    @State private var name       = ""
+    @State private var minutes    = 25
+    @State private var secs       = 0
+    @State private var hue        = 0.62
+    @State private var saturation = 0.85
+    @State private var brightness = 0.95
 
-    var previewColor: Color { Color(hue: selectedHue, saturation: 0.85, brightness: 0.95) }
+    var previewColor: Color { Color(hue: hue, saturation: saturation, brightness: brightness) }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -196,21 +204,9 @@ struct AddPresetSheet: View {
                 .foregroundColor(.white.opacity(0.4))
                 .tracking(2)
                 .padding(.top, 24)
-                .padding(.bottom, 24)
-
-            // Color preview
-            Circle()
-                .fill(previewColor)
-                .frame(width: 50, height: 50)
-                .shadow(color: previewColor.opacity(0.5), radius: 12)
-                .padding(.bottom, 8)
-
-            Text(ColorNamer.name(for: selectedHue))
-                .font(.system(size: 13, weight: .light, design: .monospaced))
-                .foregroundColor(previewColor)
                 .padding(.bottom, 20)
 
-            // Name field
+            // Name
             TextField("session name", text: $name)
                 .font(.system(size: 14, weight: .light, design: .monospaced))
                 .foregroundColor(.white)
@@ -218,9 +214,9 @@ struct AddPresetSheet: View {
                 .padding(12)
                 .background(RoundedRectangle(cornerRadius: 10).fill(.white.opacity(0.07)))
                 .padding(.horizontal, 40)
-                .padding(.bottom, 20)
+                .padding(.bottom, 16)
 
-            // Duration pickers
+            // Duration
             HStack(spacing: 0) {
                 Picker("Minutes", selection: $minutes) {
                     ForEach(0..<120) { m in
@@ -228,59 +224,31 @@ struct AddPresetSheet: View {
                             .font(.system(size: 22, weight: .thin, design: .monospaced))
                     }
                 }
-                .pickerStyle(.wheel)
-                .frame(width: 110)
-                .clipped()
+                .pickerStyle(.wheel).frame(width: 110).clipped()
 
-                Picker("Seconds", selection: $seconds) {
+                Picker("Seconds", selection: $secs) {
                     ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { s in
                         Text(String(format: "%02ds", s)).tag(s)
                             .font(.system(size: 22, weight: .thin, design: .monospaced))
                     }
                 }
-                .pickerStyle(.wheel)
-                .frame(width: 110)
-                .clipped()
+                .pickerStyle(.wheel).frame(width: 110).clipped()
             }
             .colorScheme(.dark)
             .padding(.bottom, 16)
 
-            // Hue picker
-            Text("choose a color")
-                .font(.system(size: 10, weight: .light, design: .monospaced))
-                .foregroundColor(.white.opacity(0.25))
-                .tracking(2)
-                .padding(.bottom, 10)
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
-                    ForEach(ColorNamer.allNames, id: \.name) { entry in
-                        Button {
-                            selectedHue = entry.hue
-                        } label: {
-                            VStack(spacing: 4) {
-                                Circle()
-                                    .fill(Color(hue: entry.hue, saturation: 0.85, brightness: 0.95))
-                                    .frame(width: 28, height: 28)
-                                    .overlay(
-                                        Circle().stroke(.white.opacity(selectedHue == entry.hue ? 0.8 : 0.0), lineWidth: 2)
-                                    )
-                                    .scaleEffect(selectedHue == entry.hue ? 1.2 : 1.0)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                        .animation(.easeInOut(duration: 0.15), value: selectedHue)
-                    }
-                }
-                .padding(.horizontal, 24)
+            // Color picker
+            ScrollView {
+                ChromaColorPicker(hue: $hue, saturation: $saturation, brightness: $brightness)
+                    .padding(.bottom, 16)
             }
-            .frame(height: 48)
 
             Spacer()
 
             Button {
                 guard !name.isEmpty else { return }
-                onSave(TimerPreset(name: name, minutes: minutes, seconds: seconds, hue: selectedHue))
+                onSave(TimerPreset(name: name, minutes: minutes, seconds: secs, hue: hue))
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
             } label: {
                 Text("save session")
                     .font(.system(size: 15, weight: .light, design: .monospaced))
@@ -288,6 +256,7 @@ struct AddPresetSheet: View {
                     .frame(width: 200, height: 50)
                     .background(name.isEmpty ? Color.gray.opacity(0.4) : previewColor)
                     .clipShape(Capsule())
+                    .shadow(color: previewColor.opacity(name.isEmpty ? 0 : 0.4), radius: 10)
             }
             .disabled(name.isEmpty)
             .padding(.bottom, 40)
@@ -315,13 +284,10 @@ struct TimerPickerSheet: View {
                             .font(.system(size: 32, weight: .thin, design: .monospaced))
                     }
                 }
-                .pickerStyle(.wheel)
-                .frame(width: 120)
-                .clipped()
+                .pickerStyle(.wheel).frame(width: 120).clipped()
 
                 Text("m")
-                    .font(.system(size: 18, weight: .thin, design: .monospaced))
-                    .foregroundColor(.white.opacity(0.4))
+                    .font(.system(size: 18, weight: .thin)).foregroundColor(.white.opacity(0.4))
 
                 Picker("Seconds", selection: $vm.inputSeconds) {
                     ForEach(0..<60) { s in
@@ -329,13 +295,10 @@ struct TimerPickerSheet: View {
                             .font(.system(size: 32, weight: .thin, design: .monospaced))
                     }
                 }
-                .pickerStyle(.wheel)
-                .frame(width: 120)
-                .clipped()
+                .pickerStyle(.wheel).frame(width: 120).clipped()
 
                 Text("s")
-                    .font(.system(size: 18, weight: .thin, design: .monospaced))
-                    .foregroundColor(.white.opacity(0.4))
+                    .font(.system(size: 18, weight: .thin)).foregroundColor(.white.opacity(0.4))
             }
             .colorScheme(.dark)
 
@@ -349,7 +312,6 @@ struct TimerPickerSheet: View {
                     .background(Color.white)
                     .clipShape(Capsule())
             }
-
             Spacer()
         }
         .foregroundColor(.white)
@@ -358,9 +320,9 @@ struct TimerPickerSheet: View {
 
 // MARK: - Reusable circle button
 struct CircleButton: View {
-    var icon: String
-    var color: Color
-    var size: CGFloat = 48
+    var icon:   String
+    var color:  Color
+    var size:   CGFloat = 48
     var action: () -> Void
 
     var body: some View {
@@ -376,6 +338,4 @@ struct CircleButton: View {
     }
 }
 
-#Preview {
-    TimerView()
-}
+#Preview { TimerView() }

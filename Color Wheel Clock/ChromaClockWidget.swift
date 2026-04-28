@@ -255,6 +255,7 @@ struct ChromaWidgetEntryView: View {
 }
 
 // MARK: - Widget Configuration
+
 struct ChromaClockWidget: Widget {
     let kind = "ChromaClockWidget"
 

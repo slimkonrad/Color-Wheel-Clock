@@ -6,19 +6,97 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5950DC3A2FA133F400ABA7C2 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5950DC392FA133F400ABA7C2 /* WidgetKit.framework */; };
+		5950DC3C2FA133F400ABA7C2 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5950DC3B2FA133F400ABA7C2 /* SwiftUI.framework */; };
+		5950DC4B2FA133F500ABA7C2 /* ChromaClockWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5950DC372FA133F400ABA7C2 /* ChromaClockWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5950DC492FA133F500ABA7C2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 59ACFF492F8EA54F00916313 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5950DC362FA133F400ABA7C2;
+			remoteInfo = ChromaClockWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5950DC502FA133F500ABA7C2 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5950DC4B2FA133F500ABA7C2 /* ChromaClockWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		5950DC372FA133F400ABA7C2 /* ChromaClockWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChromaClockWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5950DC392FA133F400ABA7C2 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		5950DC3B2FA133F400ABA7C2 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		59ACFF512F8EA54F00916313 /* Color Wheel Clock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Color Wheel Clock.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		5950DC4C2FA133F500ABA7C2 /* Exceptions for "ChromaClockWidget" folder in "ChromaClockWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5950DC362FA133F400ABA7C2 /* ChromaClockWidgetExtension */;
+		};
+		5950DC522FA1347400ABA7C2 /* Exceptions for "Color Wheel Clock" folder in "Color Wheel Clock" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ChromaClockWidget.swift,
+			);
+			target = 59ACFF502F8EA54F00916313 /* Color Wheel Clock */;
+		};
+		5950DC532FA1347400ABA7C2 /* Exceptions for "Color Wheel Clock" folder in "ChromaClockWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ChromaClockWidget.swift,
+			);
+			target = 5950DC362FA133F400ABA7C2 /* ChromaClockWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		5950DC3D2FA133F400ABA7C2 /* ChromaClockWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5950DC4C2FA133F500ABA7C2 /* Exceptions for "ChromaClockWidget" folder in "ChromaClockWidgetExtension" target */,
+			);
+			path = ChromaClockWidget;
+			sourceTree = "<group>";
+		};
 		59ACFF532F8EA54F00916313 /* Color Wheel Clock */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5950DC522FA1347400ABA7C2 /* Exceptions for "Color Wheel Clock" folder in "Color Wheel Clock" target */,
+				5950DC532FA1347400ABA7C2 /* Exceptions for "Color Wheel Clock" folder in "ChromaClockWidgetExtension" target */,
+			);
 			path = "Color Wheel Clock";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5950DC342FA133F400ABA7C2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5950DC3C2FA133F400ABA7C2 /* SwiftUI.framework in Frameworks */,
+				5950DC3A2FA133F400ABA7C2 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		59ACFF4E2F8EA54F00916313 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -29,10 +107,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5950DC382FA133F400ABA7C2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5950DC392FA133F400ABA7C2 /* WidgetKit.framework */,
+				5950DC3B2FA133F400ABA7C2 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		59ACFF482F8EA54F00916313 = {
 			isa = PBXGroup;
 			children = (
 				59ACFF532F8EA54F00916313 /* Color Wheel Clock */,
+				5950DC3D2FA133F400ABA7C2 /* ChromaClockWidget */,
+				5950DC382FA133F400ABA7C2 /* Frameworks */,
 				59ACFF522F8EA54F00916313 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				59ACFF512F8EA54F00916313 /* Color Wheel Clock.app */,
+				5950DC372FA133F400ABA7C2 /* ChromaClockWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +138,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5950DC362FA133F400ABA7C2 /* ChromaClockWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5950DC4D2FA133F500ABA7C2 /* Build configuration list for PBXNativeTarget "ChromaClockWidgetExtension" */;
+			buildPhases = (
+				5950DC332FA133F400ABA7C2 /* Sources */,
+				5950DC342FA133F400ABA7C2 /* Frameworks */,
+				5950DC352FA133F400ABA7C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5950DC3D2FA133F400ABA7C2 /* ChromaClockWidget */,
+			);
+			name = ChromaClockWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = ChromaClockWidgetExtension;
+			productReference = 5950DC372FA133F400ABA7C2 /* ChromaClockWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		59ACFF502F8EA54F00916313 /* Color Wheel Clock */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 59ACFF5C2F8EA55000916313 /* Build configuration list for PBXNativeTarget "Color Wheel Clock" */;
@@ -55,10 +167,12 @@
 				59ACFF4D2F8EA54F00916313 /* Sources */,
 				59ACFF4E2F8EA54F00916313 /* Frameworks */,
 				59ACFF4F2F8EA54F00916313 /* Resources */,
+				5950DC502FA133F500ABA7C2 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5950DC4A2FA133F500ABA7C2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				59ACFF532F8EA54F00916313 /* Color Wheel Clock */,
@@ -80,6 +194,9 @@
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					5950DC362FA133F400ABA7C2 = {
+						CreatedOnToolsVersion = 26.2;
+					};
 					59ACFF502F8EA54F00916313 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -100,11 +217,19 @@
 			projectRoot = "";
 			targets = (
 				59ACFF502F8EA54F00916313 /* Color Wheel Clock */,
+				5950DC362FA133F400ABA7C2 /* ChromaClockWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5950DC352FA133F400ABA7C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		59ACFF4F2F8EA54F00916313 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +240,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5950DC332FA133F400ABA7C2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		59ACFF4D2F8EA54F00916313 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +256,73 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5950DC4A2FA133F500ABA7C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5950DC362FA133F400ABA7C2 /* ChromaClockWidgetExtension */;
+			targetProxy = 5950DC492FA133F500ABA7C2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		5950DC4E2FA133F500ABA7C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChromaClockWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChromaClockWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ColorWheelClock.Color-Wheel-Clock.ChromaClockWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5950DC4F2FA133F500ABA7C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChromaClockWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChromaClockWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ColorWheelClock.Color-Wheel-Clock.ChromaClockWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		59ACFF5A2F8EA55000916313 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -253,6 +451,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Color-Wheel-Clock-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Chroma Clock";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -285,6 +484,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Color-Wheel-Clock-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Chroma Clock";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -311,6 +511,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5950DC4D2FA133F500ABA7C2 /* Build configuration list for PBXNativeTarget "ChromaClockWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5950DC4E2FA133F500ABA7C2 /* Debug */,
+				5950DC4F2FA133F500ABA7C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		59ACFF4C2F8EA54F00916313 /* Build configuration list for PBXProject "Color Wheel Clock" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -5,7 +5,6 @@ struct StopwatchView: View {
 
     var body: some View {
         ZStack {
-            // Background shifts hue as time passes
             LinearGradient(
                 colors: [
                     Color(hue: vm.currentHue, saturation: 0.40, brightness: 0.12),
@@ -18,7 +17,6 @@ struct StopwatchView: View {
 
             VStack(spacing: 0) {
 
-                // ── Header ───────────────────────────────────────────
                 Text("stopwatch")
                     .font(.system(size: 11, weight: .light, design: .monospaced))
                     .foregroundColor(.white.opacity(0.35))
@@ -28,7 +26,6 @@ struct StopwatchView: View {
 
                 Spacer()
 
-                // ── Color ring + elapsed ─────────────────────────────
                 ZStack {
                     Circle()
                         .fill(vm.currentColor.opacity(0.10))
@@ -41,10 +38,8 @@ struct StopwatchView: View {
                         .fill(Color.black.opacity(0.55))
                         .padding(22)
 
-                    // Sweep showing progress through current minute
-                    let minuteProgress = vm.elapsed.truncatingRemainder(dividingBy: 60) / 60
                     SweepArc(
-                        progress: minuteProgress,
+                        progress: vm.elapsed.truncatingRemainder(dividingBy: 60) / 60,
                         color: vm.currentColor,
                         lineWidth: 22,
                         backgroundColor: .clear
@@ -52,6 +47,7 @@ struct StopwatchView: View {
 
                     TickMarks()
 
+                    // ── Center — no pivot dot ────────────────────────
                     VStack(spacing: 4) {
                         Text(vm.displayString)
                             .font(.system(size: 38, weight: .thin, design: .monospaced))
@@ -62,41 +58,42 @@ struct StopwatchView: View {
                             .font(.system(size: 13, weight: .light, design: .monospaced))
                             .foregroundColor(vm.currentColor)
                     }
-
-                    Circle().fill(vm.currentColor).frame(width: 8, height: 8)
                 }
                 .frame(width: 300, height: 300)
 
                 Spacer()
 
-                // ── Controls ─────────────────────────────────────────
                 HStack(spacing: 40) {
                     CircleButton(
                         icon: vm.isRunning ? "flag.fill" : "arrow.counterclockwise",
                         color: .white.opacity(0.3)
-                    ) { vm.isRunning ? vm.lap() : vm.reset() }
+                    ) {
+                        if vm.isRunning {
+                            vm.lap()
+                            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                        } else {
+                            vm.reset()
+                        }
+                    }
 
                     CircleButton(
                         icon: vm.isRunning ? "pause.fill" : "play.fill",
                         color: vm.currentColor,
                         size: 64
-                    ) { vm.toggle() }
+                    ) {
+                        vm.toggle()
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                    }
 
-                    // Spacer for symmetry
-                    Circle()
-                        .fill(Color.clear)
-                        .frame(width: 48, height: 48)
+                    Circle().fill(Color.clear).frame(width: 48, height: 48)
                 }
                 .padding(.bottom, 20)
 
-                // ── Lap list ─────────────────────────────────────────
                 if !vm.laps.isEmpty {
                     VStack(spacing: 0) {
                         HStack {
-                            Text("lap")
-                            Spacer()
-                            Text("split")
-                            Spacer()
+                            Text("lap"); Spacer()
+                            Text("split"); Spacer()
                             Text("total")
                         }
                         .font(.system(size: 10, weight: .light, design: .monospaced))
@@ -106,17 +103,14 @@ struct StopwatchView: View {
 
                         ScrollView {
                             LazyVStack(spacing: 0) {
-                                ForEach(vm.laps) { lap in
-                                    LapRow(lap: lap)
-                                }
+                                ForEach(vm.laps) { lap in LapRow(lap: lap) }
                             }
                         }
                         .frame(maxHeight: 180)
                     }
                     .padding(.bottom, 100)
                 } else {
-                    Spacer()
-                        .frame(height: 100)
+                    Spacer().frame(height: 100)
                 }
             }
         }
@@ -125,40 +119,21 @@ struct StopwatchView: View {
 
 struct LapRow: View {
     var lap: StopwatchLap
-
     var body: some View {
         HStack {
-            // Color dot
-            Circle()
-                .fill(lap.color)
-                .frame(width: 8, height: 8)
-
-            Text("#\(lap.number)")
-                .frame(width: 28, alignment: .leading)
-
+            Circle().fill(lap.color).frame(width: 8, height: 8)
+            Text("#\(lap.number)").frame(width: 28, alignment: .leading)
             Spacer()
-
-            Text(lap.splitString)
-                .foregroundColor(lap.color)
-
+            Text(lap.splitString).foregroundColor(lap.color)
             Spacer()
-
-            Text(lap.elapsedString)
-                .foregroundColor(.white.opacity(0.5))
+            Text(lap.elapsedString).foregroundColor(.white.opacity(0.5))
         }
         .font(.system(size: 12, weight: .light, design: .monospaced))
         .foregroundColor(.white)
         .padding(.horizontal, 24)
         .padding(.vertical, 10)
-        .overlay(
-            Rectangle()
-                .fill(.white.opacity(0.05))
-                .frame(height: 0.5),
-            alignment: .bottom
-        )
+        .overlay(Rectangle().fill(.white.opacity(0.05)).frame(height: 0.5), alignment: .bottom)
     }
 }
 
-#Preview {
-    StopwatchView()
-}
+#Preview { StopwatchView() }
